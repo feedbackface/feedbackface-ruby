@@ -1,0 +1,6 @@
+[tools]
+ruby = "3.4.4"
+bundler = "2.5.22"
+
+[env]
+BUNDLE_PATH = "./vendor/bundle"
