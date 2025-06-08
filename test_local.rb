@@ -7,7 +7,7 @@ require "json"
 FeedbackFace.configure do |config|
   config.api_key = ENV['FEEDBACKFACE_API_KEY'] || 'your_api_key_here'
   config.account_id = ENV['FEEDBACKFACE_ACCOUNT_ID'] || 'acct_123'
-  config.api_base_url = 'http://localhost:3000'
+  config.api_base_url = 'http://feedbackface.test:3000/api/v1'
 end
 
 def test_me_endpoint
@@ -81,9 +81,10 @@ rescue => e
 end
 
 puts
-puts "Environment variables:"
-puts "  FEEDBACKFACE_API_KEY: #{ENV['FEEDBACKFACE_API_KEY'] ? '✅ Set' : '❌ Not set'}"
-puts "  FEEDBACKFACE_ACCOUNT_ID: #{ENV['FEEDBACKFACE_ACCOUNT_ID'] ? '✅ Set' : '❌ Not set (will use default)'}"
+puts "Configuration:"
+puts "  API Key: #{FeedbackFace.config.api_key}"
+puts "  Account ID: #{FeedbackFace.config.account_id}"
+puts "  API Base URL: #{FeedbackFace.config.api_base_url}"
 puts
 
 success_count = 0

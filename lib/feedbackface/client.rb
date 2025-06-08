@@ -5,7 +5,7 @@ module FeedbackFace
     def initialize(api_key: nil, account_id: nil)
       @api_key = api_key || FeedbackFace.config.api_key
       @account_id = account_id || FeedbackFace.config.account_id
-      raise AuthenticationError, "API key is required" unless @api_key
+      raise FeedbackFace::AuthenticationError, "API key is required" unless @api_key
     end
 
     # Get current user information
@@ -17,46 +17,65 @@ module FeedbackFace
     def create_customer(attributes)
       raise ArgumentError, "Account ID is required" unless @account_id
 
-      response = post("/accounts/#{@account_id}/customers", customer: attributes)
+      response = post("/accounts/#{@account_id}/customers", body: { customer: attributes })
       Customer.new(response["customer"].merge("account_id" => @account_id))
     end
 
     private
 
-    def get(path)
-      request = Net::HTTP::Get.new(path)
-      make_request(request)
+    def get(path, **options)
+      make_request(klass: Net::HTTP::Get, path: path, **options)
     end
 
-    def post(path, data)
-      request = Net::HTTP::Post.new(path)
-      make_request(request, data)
+    def post(path, **options)
+      make_request(klass: Net::HTTP::Post, path: path, **options)
     end
 
-    def make_request(request, data = nil)
-      request["Authorization"] = "Bearer #{@api_key}"
-      request["Content-Type"] = "application/json"
-      request.body = data.to_json if data
+    def make_request(klass:, path:, headers: {}, body: nil, query: nil)
+      uri = path.start_with?("http") ? URI(path) : URI("#{FeedbackFace.config.api_base_url}#{path}")
 
-      uri = URI(FeedbackFace.config.api_base_url + request.path)
-      response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == "https") do |http|
-        http.request(request)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = uri.scheme == "https"
+
+      all_headers = default_headers.merge(headers)
+      all_headers.delete("Content-Type") if klass == Net::HTTP::Get
+
+      request = klass.new(uri.request_uri, all_headers)
+
+      if body
+        request.body = body.to_json
       end
 
-      handle_response(response)
+      handle_response(http.request(request))
+    end
+
+    def default_headers
+      {
+        "Accept" => "application/json",
+        "Content-Type" => "application/json",
+        "Authorization" => "Bearer #{api_key}"
+      }
     end
 
     def handle_response(response)
-      case response
-      when Net::HTTPSuccess
-        JSON.parse(response.body)
-      when Net::HTTPUnauthorized
-        raise AuthenticationError, "Invalid API key"
-      when Net::HTTPUnprocessableEntity
-        error = JSON.parse(response.body)
-        raise ValidationError, error["error"] || error["errors"].to_s
+      case response.code
+      when "200", "201", "202", "203", "204"
+        response.body.empty? ? {} : JSON.parse(response.body)
+      when "401"
+        raise FeedbackFace::AuthenticationError, "Invalid API key"
+      when "404"
+        raise FeedbackFace::NotFound, "Resource not found"
+      when "422"
+        begin
+          error = JSON.parse(response.body)
+          raise FeedbackFace::ValidationError, error["error"] || error["errors"].to_s
+        rescue JSON::ParserError
+          raise FeedbackFace::ValidationError, response.body
+        end
+      when "429"
+        raise FeedbackFace::RateLimit, "Rate limit exceeded. Please try again later."
       else
-        raise Error, "Unexpected error: #{response.code} - #{response.body}"
+        raise FeedbackFace::Error, "Unexpected error: #{response.code} - #{response.body}"
       end
     end
   end

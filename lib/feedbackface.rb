@@ -8,6 +8,8 @@ module FeedbackFace
   class Error < StandardError; end
   class AuthenticationError < Error; end
   class ValidationError < Error; end
+  class NotFound < Error; end
+  class RateLimit < Error; end
 
   class << self
     def configure
