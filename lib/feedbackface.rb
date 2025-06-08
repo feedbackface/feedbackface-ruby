@@ -27,7 +27,7 @@ module FeedbackFace
     attr_accessor :api_key, :api_base_url, :account_id
 
     def initialize
-      @api_base_url = "https://api.feedbackface.com"
+      @api_base_url = "https://feedbackface.com/api/v1"
     end
   end
 end

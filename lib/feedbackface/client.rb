@@ -10,14 +10,14 @@ module FeedbackFace
 
     # Get current user information
     def me
-      get("/api/v1/me")
+      get("/me")
     end
 
     # Create a customer
     def create_customer(attributes)
       raise ArgumentError, "Account ID is required" unless @account_id
 
-      response = post("/api/v1/accounts/#{@account_id}/customers", customer: attributes)
+      response = post("/accounts/#{@account_id}/customers", customer: attributes)
       Customer.new(response["customer"].merge("account_id" => @account_id))
     end
 
