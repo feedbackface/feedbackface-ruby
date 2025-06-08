@@ -45,9 +45,10 @@ First, configure the client with your API key:
 ```ruby
 FeedbackFace.configure do |config|
   config.api_key = "your_api_key_here"
-  config.account_id = "acct_123"  # Optional: set default account
-  # Optionally override the API base URL
-  # config.api_base_url = "https://custom-api.feedbackface.com"
+  # 1. Go to https://feedbackface.com/accounts
+  # 2. Select an account
+  # 3. Find your account ID in the url in the format acct_123 (e.g. https://feedbackface.com/accounts/acct_123)
+  config.account_id = "acct_123"
 end
 ```
 
