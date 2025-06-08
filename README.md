@@ -40,15 +40,29 @@ $ gem install feedbackface-ruby
 
 ## Usage
 
-First, configure the client with your API key:
+### Configuration
+
+First, configure the client with your API key. In a Rails application, it's recommended to add this configuration to an initializer:
+
+Create `config/initializers/feedbackface.rb`:
 
 ```ruby
+# config/initializers/feedbackface.rb
 FeedbackFace.configure do |config|
-  config.api_key = "your_api_key_here"
+  config.api_key = Rails.application.credentials.dig(:feedbackface, :api_key)
   # 1. Go to https://feedbackface.com/accounts
   # 2. Select an account
   # 3. Find your account ID in the url in the format acct_123 (e.g. https://feedbackface.com/accounts/acct_123)
-  config.account_id = "acct_123"
+  config.account_id = Rails.application.credentials.dig(:feedbackface, :account_id)
+end
+```
+
+For non-Rails applications, configure directly:
+
+```ruby
+FeedbackFace.configure do |config|
+  config.api_key = ENV["FEEDBACKFACE_API_KEY"]
+  config.account_id = ENV["FEEDBACKFACE_ACCOUNT_ID"]
 end
 ```
 
