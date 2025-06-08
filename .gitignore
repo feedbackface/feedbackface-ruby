@@ -1,0 +1,45 @@
+/.bundle/
+/.yardoc
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
+/vendor/
+
+# Built gem files
+*.gem
+
+# Environment files (sensitive data)
+.env
+.env.local
+.env.*.local
+
+# OS specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Test artifacts
+/test/cassettes/*.yml
+!/test/cassettes/.gitkeep
+
+# Ruby version managers
+.rvmrc
+.rbenv-version
+.mise.local.toml
+
+# Bundler config
+/.bundle/config
