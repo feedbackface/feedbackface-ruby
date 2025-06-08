@@ -1,6 +1,6 @@
-require_relative "ruby/version"
-require_relative "ruby/client"
-require_relative "ruby/customer"
+require_relative "feedbackface/version"
+require_relative "feedbackface/client"
+require_relative "feedbackface/customer"
 require "net/http"
 require "json"
 

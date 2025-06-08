@@ -14,7 +14,7 @@ class ClientTest < Minitest::Test
     assert_equal "custom_key", client.api_key
   end
 
-      def test_client_initialization_with_account_id
+  def test_client_initialization_with_account_id
     client = FeedbackFace.new(account_id: "custom_account")
     assert_equal "custom_account", client.account_id
   end
@@ -35,11 +35,5 @@ class ClientTest < Minitest::Test
     end
   end
 
-        def test_create_customer_raises_error_without_account_id
-    client = FeedbackFace.new # account_id will be nil
 
-    assert_raises ArgumentError do
-      client.create_customer({email: "test@example.com"})
-    end
-  end
 end

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require_relative "lib/feedbackface/ruby"
+require_relative "lib/feedbackface"
 require "json"
 
 # Configure for local testing

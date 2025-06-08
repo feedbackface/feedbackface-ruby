@@ -1,5 +1,5 @@
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
-require "feedbackface/ruby"
+require "feedbackface"
 
 require "minitest/autorun"
 require "mocha/minitest"
@@ -43,7 +43,7 @@ class Minitest::Test
   end
 
   def teardown
-    FeedbackFace.config = nil
+    FeedbackFace.instance_variable_set(:@config, nil)
   end
 
   def mock_response(body, status = 200)

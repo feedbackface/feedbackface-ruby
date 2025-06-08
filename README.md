@@ -11,7 +11,7 @@ Since this gem is not yet published to RubyGems, you can install it directly fro
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'feedbackface-ruby', git: 'https://github.com/feedbackface/feedbackface-ruby.git'
+gem 'feedbackface', git: 'https://github.com/feedbackface/feedbackface-ruby.git'
 ```
 
 And then execute:
@@ -25,7 +25,7 @@ $ bundle install
 Once published, you'll be able to install it with:
 
 ```ruby
-gem 'feedbackface-ruby'
+gem 'feedbackface'
 ```
 
 ```bash
@@ -35,7 +35,7 @@ $ bundle install
 Or install it yourself as:
 
 ```bash
-$ gem install feedbackface-ruby
+$ gem install feedbackface
 ```
 
 ## Usage

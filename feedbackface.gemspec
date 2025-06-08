@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_relative "lib/feedbackface/ruby/version"
+require_relative "lib/feedbackface/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "feedbackface-ruby"
-  spec.version = FeedbackFace::Ruby::VERSION
-  spec.authors = ["Rinas"]
+  spec.name = "feedbackface"
+  spec.version = FeedbackFace::VERSION
+  spec.authors = ["Rinas Muhammed"]
   spec.email = ["rinas@feedbackface.com"]
 
   spec.summary = "Ruby client for the FeedbackFace API"
